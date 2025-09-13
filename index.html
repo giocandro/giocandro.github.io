@@ -1,14 +1,32 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Giocandro</title>
-  </head>
-  <body>
+<head>
+  <meta charset="utf-8">
+  <title>Giocandro</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <!-- Menu -->
+  <div id="menu"></div>
+  <script>
+    fetch("/menu.html")
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("menu").innerHTML = data;
+      });
+  </script>
+
+  <!-- Contenuto principale -->
+  <div class="container">
     <h1>Benvenuto su Giocandro!</h1>
-    <p>Qui troverai i miei giochi online. Per iniziare:</p>
+    <p>Qui troverai i miei giochi online. Clicca su un gioco per iniziare a divertirti!</p>
+    
     <ul>
-      <li><a href="/games/snake/">Snake</a></li>
+      <li><a href="/games/snake/index.html">Snake</a></li>
+      <!-- Aggiungi altri giochi qui -->
     </ul>
-  </body>
+  </div>
+
+</body>
 </html>
