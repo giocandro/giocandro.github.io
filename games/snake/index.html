@@ -3,14 +3,25 @@
 <head>
   <meta charset="utf-8">
   <title>Snake</title>
-  <link rel="stylesheet" href="./style.css">
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+    }
+    canvas {
+      border: 2px solid #000;
+      background: #fff;
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
 </head>
 <body>
   <h1>Snake</h1>
   <canvas id="gameCanvas" width="400" height="400"></canvas>
   <p>Punteggio: <span id="score">0</span></p>
 
-  <!-- Lo script va in fondo al body -->
   <script src="./snake.js"></script>
 </body>
 </html>
