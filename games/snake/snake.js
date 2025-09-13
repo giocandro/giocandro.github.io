@@ -28,24 +28,31 @@ function changeDirection(event) {
   }
 }
 
-function draw() {
-  // sfondo
-  ctx.fillStyle = "#fff";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+// funzione collisione
+function collision(head, array) {
+  return array.some(segment => head.x === segment.x && head.y === segment.y);
+}
 
-  // disegna serpente
-  for (let i = 0; i < snake.length; i++) {
-    ctx.fillStyle = i === 0 ? "green" : "lightgreen";
-    ctx.fillRect(snake[i].x, snake[i].y, box, box);
-    ctx.strokeStyle = "black";
-    ctx.strokeRect(snake[i].x, snake[i].y, box, box);
+// tempo dell’ultimo frame
+let lastTime = 0;
+const speed = 7; // velocità (celle al secondo)
+
+function gameLoop(timestamp) {
+  // calcolo del tempo passato
+  if (!lastTime) lastTime = timestamp;
+  const delta = (timestamp - lastTime) / 1000; // in secondi
+
+  // se è passato abbastanza tempo, aggiorno
+  if (delta > 1 / speed) {
+    lastTime = timestamp;
+    update();
+    draw();
   }
 
-  // disegna cibo
-  ctx.fillStyle = "red";
-  ctx.fillRect(food.x, food.y, box, box);
+  requestAnimationFrame(gameLoop);
+}
 
-  // posizione della testa
+function update() {
   let snakeX = snake[0].x;
   let snakeY = snake[0].y;
 
@@ -66,10 +73,9 @@ function draw() {
     snake.pop(); // rimuove la coda
   }
 
-  // nuova testa
   const newHead = { x: snakeX, y: snakeY };
 
-  // game over se tocca se stesso o i bordi
+  // game over
   if (
     snakeX < 0 ||
     snakeY < 0 ||
@@ -77,21 +83,30 @@ function draw() {
     snakeY >= canvas.height ||
     collision(newHead, snake)
   ) {
-    clearInterval(game);
     alert("Game Over! Punteggio: " + score);
+    document.location.reload();
   }
 
   snake.unshift(newHead);
 }
 
-function collision(head, array) {
-  for (let i = 0; i < array.length; i++) {
-    if (head.x === array[i].x && head.y === array[i].y) {
-      return true;
-    }
-  }
-  return false;
+function draw() {
+  // sfondo
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // disegna serpente
+  snake.forEach((segment, i) => {
+    ctx.fillStyle = i === 0 ? "green" : "lightgreen";
+    ctx.fillRect(segment.x, segment.y, box, box);
+    ctx.strokeStyle = "black";
+    ctx.strokeRect(segment.x, segment.y, box, box);
+  });
+
+  // disegna cibo
+  ctx.fillStyle = "red";
+  ctx.fillRect(food.x, food.y, box, box);
 }
 
-// aggiorna il gioco ogni 100ms
-let game = setInterval(draw, 100);
+// avvio del loop
+requestAnimationFrame(gameLoop);
