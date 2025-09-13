@@ -129,5 +129,19 @@ document.getElementById("resumeBtn").addEventListener("click", () => {
   }
 });
 
+// --- Controlli touch ---
+document.getElementById("upBtn").addEventListener("click", () => {
+  if (direction !== "DOWN") direction = "UP";
+});
+document.getElementById("downBtn").addEventListener("click", () => {
+  if (direction !== "UP") direction = "DOWN";
+});
+document.getElementById("leftBtn").addEventListener("click", () => {
+  if (direction !== "RIGHT") direction = "LEFT";
+});
+document.getElementById("rightBtn").addEventListener("click", () => {
+  if (direction !== "LEFT") direction = "RIGHT";
+});
+
 // Inizializza al caricamento
 initGame();
