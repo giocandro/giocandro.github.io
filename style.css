@@ -129,18 +129,45 @@ canvas {
   box-shadow: 0 3px 4px rgba(0,0,0,0.2);
 }
 
-/* Nascondi controlli touch di default */
-.touch-controls {
+/* Nascondi i controlli touch di default (PC) */
+#touchControls {
   display: none;
+  margin-top: 10px;
+  text-align: center;
 }
 
-/* Mostra controlli touch SOLO su smartphone/tablet */
+/* Mostra i controlli touch SOLO su smartphone e tablet */
 @media (max-width: 768px) {
-  .touch-controls {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  #touchControls {
+    display: block;
+  }
+
+  .touch-button {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    margin: 5px;
+    border-radius: 10px;
+    background: linear-gradient(to bottom, #4da3ff, #1a73e8);
+    color: white;
+    border: none;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+  }
+
+  .touch-grid {
+    display: grid;
+    grid-template-areas:
+      ". up ."
+      "left . right"
+      ". down .";
     gap: 10px;
+    justify-content: center;
     margin-top: 15px;
   }
+
+  .up    { grid-area: up; }
+  .down  { grid-area: down; }
+  .left  { grid-area: left; }
+  .right { grid-area: right; }
 }
+
