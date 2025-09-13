@@ -16,18 +16,19 @@ body {
   text-align: center;
 }
 
-/* Canvas Snake */
+/* --- Canvas Snake --- */
 canvas {
   background: #e1f5fe;
   display: block;
   margin: 20px auto;
   border: 2px solid #0277bd;
   border-radius: 8px;
-  max-width: 100%;
+  width: 100%;
+  max-width: 400px;
   height: auto;
 }
 
-/* Pulsanti PC */
+/* --- Pulsanti PC --- */
 .controls {
   display: flex;
   justify-content: center;
@@ -55,30 +56,46 @@ canvas {
   box-shadow: 0 6px 8px rgba(0,0,0,0.3);
 }
 
-/* --- Controlli touch --- */
+/* --- Controlli touch intorno al canvas --- */
 #touchControls {
-  display: none;
-  margin-top: 10px;
-  text-align: center;
+  display: none; /* default nascosto su PC */
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 10px auto 0 auto;
+  height: auto;
 }
 
 .touch-grid {
   display: grid;
+  grid-template-areas:
+    ". up ."
+    "left . right"
+    ". down .";
   gap: 10px;
-  justify-content: center;
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+  position: relative; 
+  top: 0; 
+  transform: none;
 }
 
 .touch-button {
-  width: 60px;
-  height: 60px;
-  font-size: 24px;
-  margin: 5px;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
   border-radius: 10px;
   background: linear-gradient(to bottom, #4da3ff, #1a73e8);
   color: white;
   border: none;
   box-shadow: 0 3px 6px rgba(0,0,0,0.3);
 }
+
+.up    { grid-area: up; }
+.down  { grid-area: down; }
+.left  { grid-area: left; }
+.right { grid-area: right; }
 
 /* --- Menu --- */
 .navbar {
@@ -158,8 +175,11 @@ canvas {
 
 /* --- Media Query Mobile --- */
 @media (max-width: 768px) {
+
+  /* Container leggermente più stretto */
   .container { padding: 15px; }
 
+  /* Menu verticale mobile */
   .menu {
     flex-direction: column;
     position: absolute;
@@ -173,6 +193,7 @@ canvas {
   .menu.show { display: flex; }
   .menu > li { margin: 0; }
 
+  /* Dropdown mobile */
   .dropdown-content {
     position: static;
     transform: none;
@@ -184,9 +205,12 @@ canvas {
   .dropdown:hover .dropdown-content { display: none; }
   .dropdown.active .dropdown-content { display: flex; flex-direction: column; }
 
+  /* Hamburger visibile */
   .hamburger { display: block; }
 
-  #touchControls { display: block; }
-
+  /* Pulsanti PC verticali */
   .controls { flex-direction: column; gap: 10px; }
+
+  /* Pulsanti touch visibili e centrati sotto il canvas */
+  #touchControls { display: block; }
 }
