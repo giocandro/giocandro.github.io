@@ -18,23 +18,21 @@
   </script>
 
   <!-- Contenuto principale -->
-  <div class="container" style="display: flex; justify-content: center; align-items: flex-start; gap: 30px;">
+  <div class="container">
   
-  <!-- Canvas del gioco -->
-  <div>
-    <h1>Snake</h1>
-    <canvas id="gameCanvas" width="400" height="400"></canvas>
-    <p>Punteggio: <span id="score">0</span></p>
-  </div>
+  <h1>Snake</h1>
+  
+  <canvas id="gameCanvas" width="400" height="400"></canvas>
+  <p>Punteggio: <span id="score">0</span></p>
 
-  <!-- Pannello dei pulsanti -->
+  <!-- Pulsanti PC -->
   <div class="controls">
     <button id="startBtn">Start</button>
     <button id="pauseBtn">Pausa</button>
     <button id="resumeBtn">Riprendi</button>
   </div>
 
-  <!-- Controlli touch -->
+  <!-- Pulsanti Touch -->
   <div id="touchControls">
     <div class="touch-grid">
       <button class="touch-button up">↑</button>
@@ -43,7 +41,6 @@
       <button class="touch-button down">↓</button>
     </div>
   </div>
-
 
 </div>
 
