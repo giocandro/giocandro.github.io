@@ -18,11 +18,23 @@
   </script>
 
   <!-- Contenuto principale -->
-  <div class="container">
+  <div class="container" style="display: flex; justify-content: center; align-items: flex-start; gap: 30px;">
+  
+  <!-- Canvas del gioco -->
+  <div>
     <h1>Snake</h1>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <p>Punteggio: <span id="score">0</span></p>
   </div>
+
+  <!-- Pannello dei pulsanti -->
+  <div class="controls">
+    <button id="startBtn">Start</button>
+    <button id="pauseBtn">Pausa</button>
+    <button id="resumeBtn">Riprendi</button>
+  </div>
+
+</div>
 
   <!-- Script del gioco -->
   <script src="./snake.js"></script>
