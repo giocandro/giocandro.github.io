@@ -1,26 +1,39 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="it">
 <head>
-  <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Giocandro</title>
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Menu -->
+  <!-- Menu incluso via JS -->
   <div id="menu"></div>
   <script>
-    fetch("/menu.html")
+    fetch("menu.html")
       .then(response => response.text())
       .then(data => {
         document.getElementById("menu").innerHTML = data;
+        // Inizializza JS menu dopo averlo inserito
+        const hamburger = document.getElementById("hamburger");
+        const menuList = document.getElementById("menuList");
+        hamburger.addEventListener("click", () => {
+          menuList.classList.toggle("show");
+        });
+        document.querySelectorAll(".dropdown > a").forEach(item => {
+          item.addEventListener("click", e => {
+            e.preventDefault();
+            item.parentElement.classList.toggle("active");
+          });
+        });
       });
   </script>
 
   <!-- Contenuto principale -->
   <div class="container">
     <h1>Benvenuto su Giocandro!</h1>
-    <p>Qui troverai i miei giochi online. Clicca su un gioco per iniziare a divertirti!</p>
+    <p>Divertiti con i nostri giochi!</p>
   </div>
 
 </body>
