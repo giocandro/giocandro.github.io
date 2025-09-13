@@ -1,4 +1,86 @@
-/* Navbar base */
+/* --- Generale --- */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #b3e5fc;
+  border: 3px solid #0277bd;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+/* Canvas Snake */
+canvas {
+  background: #e1f5fe;
+  display: block;
+  margin: 20px auto;
+  border: 2px solid #0277bd;
+  border-radius: 8px;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Pulsanti PC */
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.controls button {
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: bold;
+  border: 2px solid #01579b;
+  border-radius: 8px;
+  background: linear-gradient(to bottom, #03a9f4, #0277bd);
+  color: #e0f7fa;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+.controls button:hover {
+  background: linear-gradient(to bottom, #0277bd, #01579b);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0,0,0,0.3);
+}
+
+/* --- Controlli touch --- */
+#touchControls {
+  display: none;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.touch-grid {
+  display: grid;
+  gap: 10px;
+  justify-content: center;
+}
+
+.touch-button {
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  margin: 5px;
+  border-radius: 10px;
+  background: linear-gradient(to bottom, #4da3ff, #1a73e8);
+  color: white;
+  border: none;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+}
+
+/* --- Menu --- */
 .navbar {
   background: #0277bd;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
@@ -41,9 +123,7 @@
   display: block;
 }
 
-.menu a:hover {
-  color: #ffeb3b;
-}
+.menu a:hover { color: #ffeb3b; }
 
 /* Dropdown */
 .dropdown-content {
@@ -59,25 +139,16 @@
   z-index: 10;
 }
 
-.dropdown-content li {
-  margin: 0;
-}
-
+.dropdown-content li { margin: 0; }
 .dropdown-content a {
   color: black;
   padding: 10px 12px;
   font-weight: normal;
 }
+.dropdown-content a:hover { background-color: #ddd; }
 
-.dropdown-content a:hover {
-  background-color: #ddd;
-}
+.dropdown:hover .dropdown-content { display: block; }
 
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-/* Hamburger nascosto di default */
 .hamburger {
   display: none;
   font-size: 28px;
@@ -87,6 +158,8 @@
 
 /* --- Media Query Mobile --- */
 @media (max-width: 768px) {
+  .container { padding: 15px; }
+
   .menu {
     flex-direction: column;
     position: absolute;
@@ -94,16 +167,11 @@
     right: 0;
     background: #0277bd;
     width: 200px;
-    display: none; /* nascosto di default */
+    display: none;
   }
 
-  .menu.show {
-    display: flex;
-  }
-
-  .menu > li {
-    margin: 0;
-  }
+  .menu.show { display: flex; }
+  .menu > li { margin: 0; }
 
   .dropdown-content {
     position: static;
@@ -113,17 +181,12 @@
     border-radius: 0;
   }
 
-  .dropdown:hover .dropdown-content {
-    display: none; /* disabiliti hover su mobile */
-  }
+  .dropdown:hover .dropdown-content { display: none; }
+  .dropdown.active .dropdown-content { display: flex; flex-direction: column; }
 
-  .dropdown.active .dropdown-content {
-    display: flex;
-    flex-direction: column;
-  }
+  .hamburger { display: block; }
 
-  .hamburger {
-    display: block;
-  }
+  #touchControls { display: block; }
+
+  .controls { flex-direction: column; gap: 10px; }
 }
-
