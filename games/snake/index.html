@@ -1,51 +1,59 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="it">
 <head>
-  <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Snake - Giocandro</title>
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="../../style.css">
 </head>
 <body>
 
-  <!-- Menu -->
+  <!-- Menu incluso via JS -->
   <div id="menu"></div>
   <script>
-    fetch("/menu.html")
+    fetch("../../menu.html")
       .then(response => response.text())
       .then(data => {
         document.getElementById("menu").innerHTML = data;
+        // Inizializza JS menu
+        const hamburger = document.getElementById("hamburger");
+        const menuList = document.getElementById("menuList");
+        hamburger.addEventListener("click", () => {
+          menuList.classList.toggle("show");
+        });
+        document.querySelectorAll(".dropdown > a").forEach(item => {
+          item.addEventListener("click", e => {
+            e.preventDefault();
+            item.parentElement.classList.toggle("active");
+          });
+        });
       });
   </script>
 
-  <!-- Contenuto principale -->
+  <!-- Gioco -->
   <div class="container">
-  
-  <h1>Snake</h1>
-  
-  <canvas id="gameCanvas" width="400" height="400"></canvas>
-  <p>Punteggio: <span id="score">0</span></p>
+    <h1>Snake</h1>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <p>Punteggio: <span id="score">0</span></p>
 
-  <!-- Pulsanti PC -->
-  <div class="controls">
-    <button id="startBtn">Start</button>
-    <button id="pauseBtn">Pausa</button>
-    <button id="resumeBtn">Riprendi</button>
-  </div>
+    <!-- Pulsanti PC -->
+    <div class="controls">
+      <button id="startBtn">Start</button>
+      <button id="pauseBtn">Pausa</button>
+      <button id="resumeBtn">Riprendi</button>
+    </div>
 
-  <!-- Pulsanti Touch -->
-  <div id="touchControls">
-    <div class="touch-grid">
-      <button class="touch-button up">↑</button>
-      <button class="touch-button left">←</button>
-      <button class="touch-button right">→</button>
-      <button class="touch-button down">↓</button>
+    <!-- Pulsanti touch -->
+    <div id="touchControls">
+      <div class="touch-grid">
+        <button id="upBtn" class="touch-button up">↑</button>
+        <button id="leftBtn" class="touch-button left">←</button>
+        <button id="rightBtn" class="touch-button right">→</button>
+        <button id="downBtn" class="touch-button down">↓</button>
+      </div>
     </div>
   </div>
 
-</div>
-
-  <!-- Script del gioco -->
-  <script src="./snake.js"></script>
-
+  <script src="snake.js"></script>
 </body>
 </html>
