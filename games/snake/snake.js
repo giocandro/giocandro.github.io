@@ -2,48 +2,49 @@ const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 const scoreEl = document.getElementById("score");
 
-const box = 20; // dimensione del quadrato
-let snake = [{ x: 9 * box, y: 10 * box }];
+const box = 20;
+let snake = [];
 let direction;
 let score = 0;
+let food = {};
+let lastTime = 0;
+const speed = 5; // celle al secondo
+let isRunning = false;
+let gameOver = false;
 
-// genera cibo in posizione casuale
-let food = {
-  x: Math.floor(Math.random() * 19) * box,
-  y: Math.floor(Math.random() * 19) * box
-};
-
-// controlli da tastiera
-document.addEventListener("keydown", changeDirection);
-
-function changeDirection(event) {
-  if (event.key === "ArrowLeft" && direction !== "RIGHT") {
-    direction = "LEFT";
-  } else if (event.key === "ArrowUp" && direction !== "DOWN") {
-    direction = "UP";
-  } else if (event.key === "ArrowRight" && direction !== "LEFT") {
-    direction = "RIGHT";
-  } else if (event.key === "ArrowDown" && direction !== "UP") {
-    direction = "DOWN";
-  }
+// Inizializza il gioco
+function initGame() {
+  snake = [{ x: 9 * box, y: 10 * box }];
+  direction = null; // non si muove finché non premi freccia
+  score = 0;
+  scoreEl.textContent = score;
+  food = {
+    x: Math.floor(Math.random() * 19) * box,
+    y: Math.floor(Math.random() * 19) * box
+  };
+  gameOver = false;
 }
 
-// funzione collisione
+// Controlli tastiera
+document.addEventListener("keydown", changeDirection);
+function changeDirection(event) {
+  if (event.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
+  else if (event.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
+  else if (event.key === "ArrowRight" && direction !== "LEFT") direction = "RIGHT";
+  else if (event.key === "ArrowDown" && direction !== "UP") direction = "DOWN";
+}
+
+// Funzione collisione
 function collision(head, array) {
   return array.some(segment => head.x === segment.x && head.y === segment.y);
 }
 
-// tempo dell’ultimo frame
-let lastTime = 0;
-const speed = 6; // velocità (celle al secondo)
-
+// Funzione principale
 function gameLoop(timestamp) {
-  // calcolo del tempo passato
   if (!lastTime) lastTime = timestamp;
-  const delta = (timestamp - lastTime) / 1000; // in secondi
+  const delta = (timestamp - lastTime) / 1000;
 
-  // se è passato abbastanza tempo, aggiorno
-  if (delta > 1 / speed) {
+  if (delta > 1 / speed && isRunning) {
     lastTime = timestamp;
     update();
     draw();
@@ -52,6 +53,7 @@ function gameLoop(timestamp) {
   requestAnimationFrame(gameLoop);
 }
 
+// Aggiorna stato gioco
 function update() {
   let snakeX = snake[0].x;
   let snakeY = snake[0].y;
@@ -61,7 +63,7 @@ function update() {
   if (direction === "RIGHT") snakeX += box;
   if (direction === "DOWN") snakeY += box;
 
-  // se mangia il cibo
+  // Mangia cibo
   if (snakeX === food.x && snakeY === food.y) {
     score++;
     scoreEl.textContent = score;
@@ -70,12 +72,12 @@ function update() {
       y: Math.floor(Math.random() * 19) * box
     };
   } else {
-    snake.pop(); // rimuove la coda
+    snake.pop();
   }
 
   const newHead = { x: snakeX, y: snakeY };
 
-  // game over
+  // Game over
   if (
     snakeX < 0 ||
     snakeY < 0 ||
@@ -83,19 +85,19 @@ function update() {
     snakeY >= canvas.height ||
     collision(newHead, snake)
   ) {
+    isRunning = false;
+    gameOver = true;
     alert("Game Over! Punteggio: " + score);
-    document.location.reload();
   }
 
   snake.unshift(newHead);
 }
 
+// Disegna
 function draw() {
-  // sfondo
-  ctx.fillStyle = "#fff";
+  ctx.fillStyle = "#e1f5fe";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // disegna serpente
   snake.forEach((segment, i) => {
     ctx.fillStyle = i === 0 ? "green" : "lightgreen";
     ctx.fillRect(segment.x, segment.y, box, box);
@@ -103,10 +105,29 @@ function draw() {
     ctx.strokeRect(segment.x, segment.y, box, box);
   });
 
-  // disegna cibo
   ctx.fillStyle = "red";
   ctx.fillRect(food.x, food.y, box, box);
 }
 
-// avvio del loop
-requestAnimationFrame(gameLoop);
+// Controlli bottoni
+document.getElementById("startBtn").addEventListener("click", () => {
+  if (!isRunning) {
+    if (gameOver) initGame(); // reset automatico se Game Over
+    isRunning = true;
+    lastTime = 0;
+    requestAnimationFrame(gameLoop);
+  }
+});
+
+document.getElementById("pauseBtn").addEventListener("click", () => {
+  isRunning = false;
+});
+
+document.getElementById("resumeBtn").addEventListener("click", () => {
+  if (!isRunning && !gameOver) {
+    isRunning = true;
+  }
+});
+
+// Inizializza al caricamento
+initGame();
