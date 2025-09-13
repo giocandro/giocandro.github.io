@@ -1,12 +1,16 @@
+/* Stile generale del body */
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f4f4;
+  font-family: 'Arial', sans-serif;
+  background: #e0f7fa; /* celeste chiaro di sfondo */
+  color: #003366; /* blu scuro testo */
 }
 
+/* Menu di navigazione */
 .navbar {
-  background: #333;
+  background: #0277bd; /* blu principale */
   padding: 10px 0;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 .navbar ul {
@@ -18,16 +22,50 @@ body {
 
 .navbar li {
   display: inline;
-  margin: 0 15px;
+  margin: 0 20px;
 }
 
 .navbar a {
   text-decoration: none;
-  color: white;
+  color: #e0f7fa; /* celeste chiaro testo menu */
   font-size: 18px;
+  font-weight: bold;
   transition: color 0.3s;
 }
 
 .navbar a:hover {
-  color: #ff9800;
+  color: #ffeb3b; /* giallo elegante al passaggio */
+}
+
+/* Contenitore principale con cornice */
+.container {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 30px;
+  background: #b3e5fc; /* celeste leggero */
+  border: 3px solid #0277bd; /* cornice blu scuro */
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+/* Titoli */
+h1 {
+  color: #01579b; /* blu più scuro per titoli */
+  margin-bottom: 20px;
+}
+
+/* Paragrafi */
+p {
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+/* Canvas del gioco */
+canvas {
+  background: #e1f5fe; /* celeste chiaro */
+  display: block;
+  margin: 20px auto;
+  border: 2px solid #0277bd; /* cornice blu */
+  border-radius: 8px;
 }
