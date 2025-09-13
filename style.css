@@ -137,7 +137,7 @@ canvas {
 }
 
 /* Mostra i controlli touch SOLO su smartphone e tablet */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   #touchControls {
     display: block;
   }
