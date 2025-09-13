@@ -97,3 +97,34 @@ canvas {
   border: 2px solid #0277bd; /* cornice blu */
   border-radius: 8px;
 }
+
+/* Pannello dei pulsanti */
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.controls button {
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: bold;
+  border: 2px solid #01579b; /* bordo blu scuro */
+  border-radius: 8px;
+  background: linear-gradient(to bottom, #03a9f4, #0277bd); /* gradiente celeste-blu */
+  color: #e0f7fa; /* testo celeste chiaro */
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+.controls button:hover {
+  background: linear-gradient(to bottom, #0277bd, #01579b); /* gradiente più scuro al passaggio */
+  transform: translateY(-2px); /* leggero effetto “sollevato” */
+  box-shadow: 0 6px 8px rgba(0,0,0,0.3);
+}
+
+.controls button:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 4px rgba(0,0,0,0.2);
+}
