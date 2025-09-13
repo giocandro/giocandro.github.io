@@ -129,28 +129,18 @@ canvas {
   box-shadow: 0 3px 4px rgba(0,0,0,0.2);
 }
 
+/* Nascondi controlli touch di default */
 .touch-controls {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
+  display: none;
 }
 
-.touch-controls button {
-  padding: 15px 25px;
-  font-size: 20px;
-  font-weight: bold;
-  border: 2px solid #01579b;
-  border-radius: 8px;
-  background: linear-gradient(to bottom, #03a9f4, #0277bd);
-  color: #e0f7fa;
-  cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+/* Mostra controlli touch SOLO su smartphone/tablet */
+@media (max-width: 768px) {
+  .touch-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+  }
 }
-
-.touch-controls button:active {
-  transform: scale(0.95);
-  box-shadow: 0 2px 3px rgba(0,0,0,0.2);
-}
-
