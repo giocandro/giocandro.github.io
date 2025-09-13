@@ -10,25 +10,31 @@
 
   <!-- Menu incluso via JS -->
   <div id="menu"></div>
-  <script>
-    fetch("menu.html")
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById("menu").innerHTML = data;
-        // Inizializza JS menu dopo averlo inserito
-        const hamburger = document.getElementById("hamburger");
-        const menuList = document.getElementById("menuList");
-        hamburger.addEventListener("click", () => {
-          menuList.classList.toggle("show");
-        });
-        document.querySelectorAll(".dropdown > a").forEach(item => {
-          item.addEventListener("click", e => {
-            e.preventDefault();
-            item.parentElement.classList.toggle("active");
-          });
-        });
+<script>
+fetch("menu.html")
+  .then(response => response.text())
+  .then(data => {
+    document.getElementById("menu").innerHTML = data;
+
+    // Hamburger toggle
+    const hamburger = document.getElementById("hamburger");
+    const menuList = document.getElementById("menuList");
+    hamburger.addEventListener("click", () => {
+      menuList.classList.toggle("show");
+    });
+
+    // Dropdown toggle su mobile
+    document.querySelectorAll(".dropdown > a").forEach(item => {
+      item.addEventListener("click", e => {
+        // Solo su mobile attiva il toggle
+        if (window.innerWidth <= 768) {
+          e.preventDefault();
+          item.parentElement.classList.toggle("active");
+        }
       });
-  </script>
+    });
+  });
+</script>
 
   <!-- Contenuto principale -->
   <div class="container">
