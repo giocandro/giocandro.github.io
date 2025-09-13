@@ -35,7 +35,7 @@ function collision(head, array) {
 
 // tempo dell’ultimo frame
 let lastTime = 0;
-const speed = 7; // velocità (celle al secondo)
+const speed = 6; // velocità (celle al secondo)
 
 function gameLoop(timestamp) {
   // calcolo del tempo passato
