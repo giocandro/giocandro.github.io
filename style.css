@@ -1,31 +1,44 @@
-/* Menu di navigazione */
+/* Navbar base */
 .navbar {
-  background: #0277bd; /* blu principale */
+  background: #0277bd;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  position: relative;
+}
+
+.nav-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+.nav-container .brand {
+  color: #e0f7fa;
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: none;
 }
 
 .menu {
   list-style: none;
+  display: flex;
   margin: 0;
   padding: 0;
-  display: flex;
-  justify-content: center; /* centro il menu */
-  align-items: center;
 }
 
 .menu > li {
   position: relative;
-  margin: 0 20px;
+  margin: 0 15px;
 }
 
 .menu a {
   text-decoration: none;
   color: #e0f7fa;
-  font-size: 18px;
   font-weight: bold;
-  padding: 10px 15px;
+  padding: 10px 5px;
   display: block;
-  transition: color 0.3s;
 }
 
 .menu a:hover {
@@ -36,14 +49,14 @@
 .dropdown-content {
   display: none;
   position: absolute;
-  top: 100%; /* subito sotto “Games” */
+  top: 100%;
   left: 50%;
   transform: translateX(-50%);
   background-color: #f1f1f1;
-  min-width: 160px;
+  min-width: 140px;
   box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-  z-index: 1;
   border-radius: 5px;
+  z-index: 10;
 }
 
 .dropdown-content li {
@@ -52,7 +65,7 @@
 
 .dropdown-content a {
   color: black;
-  padding: 12px 16px;
+  padding: 10px 12px;
   font-weight: normal;
 }
 
@@ -60,114 +73,57 @@
   background-color: #ddd;
 }
 
-/* Mostra dropdown al passaggio */
 .dropdown:hover .dropdown-content {
   display: block;
 }
 
-/* Contenitore principale con cornice */
-.container {
-  max-width: 800px;
-  margin: 50px auto;
-  padding: 30px;
-  background: #b3e5fc; /* celeste leggero */
-  border: 3px solid #0277bd; /* cornice blu scuro */
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-  text-align: center;
-}
-
-/* Titoli */
-h1 {
-  color: #01579b; /* blu più scuro per titoli */
-  margin-bottom: 20px;
-}
-
-/* Paragrafi */
-p {
-  font-size: 18px;
-  line-height: 1.6;
-}
-
-/* Canvas del gioco */
-canvas {
-  background: #e1f5fe; /* celeste chiaro */
-  display: block;
-  margin: 20px auto;
-  border: 2px solid #0277bd; /* cornice blu */
-  border-radius: 8px;
-}
-
-/* Pannello dei pulsanti */
-.controls {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.controls button {
-  padding: 12px 25px;
-  font-size: 16px;
-  font-weight: bold;
-  border: 2px solid #01579b; /* bordo blu scuro */
-  border-radius: 8px;
-  background: linear-gradient(to bottom, #03a9f4, #0277bd); /* gradiente celeste-blu */
-  color: #e0f7fa; /* testo celeste chiaro */
-  cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-}
-
-.controls button:hover {
-  background: linear-gradient(to bottom, #0277bd, #01579b); /* gradiente più scuro al passaggio */
-  transform: translateY(-2px); /* leggero effetto “sollevato” */
-  box-shadow: 0 6px 8px rgba(0,0,0,0.3);
-}
-
-.controls button:active {
-  transform: translateY(0);
-  box-shadow: 0 3px 4px rgba(0,0,0,0.2);
-}
-
-/* Nascondi i controlli touch di default (PC) */
-#touchControls {
+/* Hamburger nascosto di default */
+.hamburger {
   display: none;
-  margin-top: 10px;
-  text-align: center;
+  font-size: 28px;
+  color: #e0f7fa;
+  cursor: pointer;
 }
 
-/* Mostra i controlli touch SOLO su smartphone e tablet */
-@media (max-width: 1024px) {
-  #touchControls {
+/* --- Media Query Mobile --- */
+@media (max-width: 768px) {
+  .menu {
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background: #0277bd;
+    width: 200px;
+    display: none; /* nascosto di default */
+  }
+
+  .menu.show {
+    display: flex;
+  }
+
+  .menu > li {
+    margin: 0;
+  }
+
+  .dropdown-content {
+    position: static;
+    transform: none;
+    box-shadow: none;
+    background: #039be5;
+    border-radius: 0;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: none; /* disabiliti hover su mobile */
+  }
+
+  .dropdown.active .dropdown-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hamburger {
     display: block;
   }
-
-  .touch-button {
-    width: 60px;
-    height: 60px;
-    font-size: 24px;
-    margin: 5px;
-    border-radius: 10px;
-    background: linear-gradient(to bottom, #4da3ff, #1a73e8);
-    color: white;
-    border: none;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
-  }
-
-  .touch-grid {
-    display: grid;
-    grid-template-areas:
-      ". up ."
-      "left . right"
-      ". down .";
-    gap: 10px;
-    justify-content: center;
-    margin-top: 15px;
-  }
-
-  .up    { grid-area: up; }
-  .down  { grid-area: down; }
-  .left  { grid-area: left; }
-  .right { grid-area: right; }
 }
 
