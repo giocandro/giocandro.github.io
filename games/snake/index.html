@@ -10,18 +10,105 @@
   <style>
     canvas {
       display: block;
-      margin: 2rem auto;
+      margin: 1rem auto;
       background: #e9f5e9;
       border: 4px solid #4a90e2;
       border-radius: 1rem;
     }
+    #score {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin: 1rem;
+    }
+    .controls {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .controls button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 1rem;
+      background: #357ABD;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .controls button:hover {
+      background: #285f91;
+    }
+    /* frecce direzionali (solo mobile) */
+    .touch-controls {
+      display: none;
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .touch-controls button {
+      width: 60px;
+      height: 60px;
+      margin: 5px;
+      border-radius: 50%;
+      border: none;
+      background: #4a90e2;
+      color: white;
+      font-size: 1.5rem;
+    }
+    @media (max-width: 768px) {
+      .touch-controls { display: block; }
+    }
+	.popup {
+	  display: none; /* nascosto di default */
+	  position: fixed;
+	  top: 0; left: 0;
+	  width: 100%; height: 100%;
+	  background: rgba(0,0,0,0.6);
+	  justify-content: center;
+	  align-items: center;
+	}
+	.popup-content {
+	  background: white;
+	  padding: 2rem;
+	  border-radius: 1rem;
+	  text-align: center;
+	  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+	}
+	.popup-content h2 {
+	  margin-top: 0;
+	  color: #4a90e2;
+	}
   </style>
 </head>
 <body>
   <div id="menu"></div>
+  <div id="gameOverPopup" class="popup">
+  <div class="popup-content">
+    <h2>Giocandro</h2>
+    <p id="popupMessage"></p>
+    <button onclick="closePopup()">Chiudi</button>
+  </div>
+</div>
   <main class="container">
     <h1>🐍 Snake</h1>
+    <div id="score">Punteggio: 0</div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
+
+    <div class="controls">
+      <button onclick="startGame()">Start</button>
+      <button onclick="pauseGame()">Pausa</button>
+      <button onclick="resumeGame()">Riprendi</button>
+    </div>
+
+    <div class="touch-controls">
+      <div>
+        <button onclick="setDirection('up')">⬆️</button>
+      </div>
+      <div>
+        <button onclick="setDirection('left')">⬅️</button>
+        <button onclick="setDirection('down')">⬇️</button>
+        <button onclick="setDirection('right')">➡️</button>
+      </div>
+    </div>
   </main>
   <script src="snake.js"></script>
 </body>
