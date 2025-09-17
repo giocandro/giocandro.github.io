@@ -4,43 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Giocandro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script defer src="menu.js"></script>
 </head>
 <body>
 
-  <!-- Menu incluso via JS -->
+  <!-- Menu -->
   <div id="menu"></div>
-<script>
-fetch("menu.html")
-  .then(response => response.text())
-  .then(data => {
-    document.getElementById("menu").innerHTML = data;
-
-    // Hamburger toggle
-    const hamburger = document.getElementById("hamburger");
-    const menuList = document.getElementById("menuList");
-    hamburger.addEventListener("click", () => {
-      menuList.classList.toggle("show");
-    });
-
-    // Dropdown toggle su mobile
-    document.querySelectorAll(".dropdown > a").forEach(item => {
-      item.addEventListener("click", e => {
-        // Solo su mobile attiva il toggle
-        if (window.innerWidth <= 768) {
-          e.preventDefault();
-          item.parentElement.classList.toggle("active");
-        }
-      });
-    });
-  });
-</script>
 
   <!-- Contenuto principale -->
-  <div class="container">
-    <h1>Benvenuto su Giocandro!</h1>
-    <p>Divertiti con i nostri giochi!</p>
-  </div>
+  <main class="container">
+    <h1>🎮 Benvenuto su Giocandro</h1>
+    <p>Raccogli qui tutti i tuoi giochi online, aggiornati man mano!</p>
+
+    <div class="games">
+      <a href="snake/index.html" class="game-card">🐍 Snake</a>
+    </div>
+  </main>
 
 </body>
 </html>
