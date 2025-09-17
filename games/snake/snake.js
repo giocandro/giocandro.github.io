@@ -1,148 +1,91 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
-const scoreEl = document.getElementById("score");
 
-let box = 20; // dimensione cella base
-let snake = [];
-let direction;
+let gridSize = 20;
+let count = 0;
+let snake = [{x: 160, y: 160}];
+let dx = gridSize;
+let dy = 0;
+let berry = randomBerry();
 let score = 0;
-let food = {};
-let lastTime = 0;
-let speed = 5; // celle al secondo
-let isRunning = false;
-let gameOver = false;
 
-// Ridimensiona canvas per dispositivi mobili
-function resizeCanvas() {
-  const maxWidth = window.innerWidth * 0.9; // 90% dello schermo
-  canvas.width = Math.min(400, maxWidth);   // max 400px
-  canvas.height = canvas.width;             // sempre quadrato
+document.addEventListener("keydown", keyDown);
 
-  // aggiorna dimensione box in base a canvas
-  box = canvas.width / 20; // 20 celle per lato
-}
-window.addEventListener("resize", resizeCanvas);
-resizeCanvas(); // chiamata iniziale
-
-// Inizializza gioco
-function initGame() {
-  snake = [{ x: 9 * box, y: 10 * box }];
-  direction = null;
-  score = 0;
-  scoreEl.textContent = score;
-  spawnFood();
-  gameOver = false;
-}
-
-// Genera cibo casuale
-function spawnFood() {
-  food = {
-    x: Math.floor(Math.random() * 20) * box,
-    y: Math.floor(Math.random() * 20) * box
-  };
-}
-
-// Controlli tastiera
-document.addEventListener("keydown", changeDirection);
-function changeDirection(event) {
-  if (event.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
-  else if (event.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
-  else if (event.key === "ArrowRight" && direction !== "LEFT") direction = "RIGHT";
-  else if (event.key === "ArrowDown" && direction !== "UP") direction = "DOWN";
-}
-
-// Collisione
-function collision(head, array) {
-  return array.some(segment => head.x === segment.x && head.y === segment.y);
-}
-
-// Game loop
-function gameLoop(timestamp) {
-  if (!lastTime) lastTime = timestamp;
-  const delta = (timestamp - lastTime) / 1000;
-
-  if (delta > 1 / speed && isRunning) {
-    lastTime = timestamp;
-    update();
-    draw();
-  }
-
+function gameLoop() {
   requestAnimationFrame(gameLoop);
-}
+  if (++count < 6) return;
+  count = 0;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-// Aggiorna gioco
-function update() {
-  let snakeX = snake[0].x;
-  let snakeY = snake[0].y;
+  // Muove il serpente
+  const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+  snake.unshift(head);
 
-  if (direction === "LEFT") snakeX -= box;
-  if (direction === "UP") snakeY -= box;
-  if (direction === "RIGHT") snakeX += box;
-  if (direction === "DOWN") snakeY += box;
-
-  // Mangia cibo
-  if (snakeX === food.x && snakeY === food.y) {
+  // Collisione bacche
+  if (head.x === berry.x && head.y === berry.y) {
     score++;
-    scoreEl.textContent = score;
-    spawnFood();
+    berry = randomBerry();
   } else {
     snake.pop();
   }
 
-  const newHead = { x: snakeX, y: snakeY };
-
-  // Game over
-  if (
-    snakeX < 0 ||
-    snakeY < 0 ||
-    snakeX >= canvas.width ||
-    snakeY >= canvas.height ||
-    collision(newHead, snake)
-  ) {
-    isRunning = false;
-    gameOver = true;
-    alert("Game Over! Punteggio: " + score);
+  // Collisione muri o se stesso
+  if (head.x < 0 || head.y < 0 || head.x >= canvas.width || head.y >= canvas.height ||
+      snake.slice(1).some(s => s.x === head.x && s.y === head.y)) {
+    snake = [{x: 160, y: 160}];
+    dx = gridSize;
+    dy = 0;
+    berry = randomBerry();
+    score = 0;
   }
 
-  snake.unshift(newHead);
-}
+  // Disegna serpente
+  snake.forEach((part, index) => {
+    ctx.fillStyle = index === 0 ? "#2e7d32" : "#4caf50";
+    ctx.beginPath();
+    ctx.arc(part.x + gridSize/2, part.y + gridSize/2, gridSize/2 - 2, 0, Math.PI * 2);
+    ctx.fill();
 
-// Disegna
-function draw() {
-  ctx.fillStyle = "#e1f5fe";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  snake.forEach((segment, i) => {
-    ctx.fillStyle = i === 0 ? "green" : "lightgreen";
-    ctx.fillRect(segment.x, segment.y, box, box);
-    ctx.strokeStyle = "black";
-    ctx.strokeRect(segment.x, segment.y, box, box);
+    // Occhi sulla testa
+    if (index === 0) {
+      ctx.fillStyle = "#fff";
+      ctx.beginPath();
+      ctx.arc(part.x + 6, part.y + 6, 3, 0, Math.PI * 2);
+      ctx.arc(part.x + 14, part.y + 6, 3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#000";
+      ctx.beginPath();
+      ctx.arc(part.x + 6, part.y + 6, 1.5, 0, Math.PI * 2);
+      ctx.arc(part.x + 14, part.y + 6, 1.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
   });
 
+  // Disegna bacca
   ctx.fillStyle = "red";
-  ctx.fillRect(food.x, food.y, box, box);
+  ctx.beginPath();
+  ctx.arc(berry.x + gridSize/2, berry.y + gridSize/2, gridSize/2 - 3, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Fogliolina verde sopra la bacca
+  ctx.fillStyle = "green";
+  ctx.beginPath();
+  ctx.ellipse(berry.x + gridSize/2, berry.y + 4, 4, 8, Math.PI/4, 0, Math.PI*2);
+  ctx.fill();
 }
 
-// Pulsanti PC
-document.getElementById("startBtn").addEventListener("click", () => {
-  if (!isRunning) {
-    if (gameOver) initGame();
-    isRunning = true;
-    lastTime = 0;
-    requestAnimationFrame(gameLoop);
-  }
-});
+function randomBerry() {
+  return {
+    x: Math.floor(Math.random() * (canvas.width / gridSize)) * gridSize,
+    y: Math.floor(Math.random() * (canvas.height / gridSize)) * gridSize
+  };
+}
 
-document.getElementById("pauseBtn").addEventListener("click", () => { isRunning = false; });
-document.getElementById("resumeBtn").addEventListener("click", () => {
-  if (!isRunning && !gameOver) isRunning = true;
-});
+function keyDown(e) {
+  if (e.key === "ArrowLeft" && dx === 0) { dx = -gridSize; dy = 0; }
+  else if (e.key === "ArrowUp" && dy === 0) { dx = 0; dy = -gridSize; }
+  else if (e.key === "ArrowRight" && dx === 0) { dx = gridSize; dy = 0; }
+  else if (e.key === "ArrowDown" && dy === 0) { dx = 0; dy = gridSize; }
+}
 
-// Pulsanti touch
-document.getElementById("upBtn").addEventListener("click", () => { if (direction !== "DOWN") direction = "UP"; });
-document.getElementById("downBtn").addEventListener("click", () => { if (direction !== "UP") direction = "DOWN"; });
-document.getElementById("leftBtn").addEventListener("click", () => { if (direction !== "RIGHT") direction = "LEFT"; });
-document.getElementById("rightBtn").addEventListener("click", () => { if (direction !== "LEFT") direction = "RIGHT"; });
-
-// Inizializza gioco
-initGame();
+requestAnimationFrame(gameLoop);
