@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   menu.innerHTML = `
     <nav>
       <a href="index.html">Home</a>
-      <a href="snake/index.html">Snake</a>
+      <a href="./games/snake/index.html">Snake</a>
     </nav>
   `;
 });
