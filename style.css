@@ -64,6 +64,13 @@ header, #menu {
   box-shadow: 0 6px 16px rgba(0,0,0,0.15);
 }
 
+.game-info {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin: 0.5rem 0 1rem;
+  text-align: center;
+}
+
 /* Nascondi il bottone hamburger su PC */
 #menu .menu-toggle {
   display: none;
