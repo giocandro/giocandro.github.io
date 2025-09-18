@@ -1,15 +1,17 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
+const gridSize = 20; // ogni "quadrato" sarà 20x20 px
 
 function resizeCanvas() {
-  let size = Math.min(window.innerWidth * 0.9, 400); // 90% dello schermo, max 400
+  let size = Math.min(window.innerWidth * 0.9, 400);
+  // Arrotonda per far sì che sia multiplo della griglia
+  size = Math.floor(size / gridSize) * gridSize;
   canvas.width = size;
   canvas.height = size;
 }
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
-let gridSize = 20;
 let count = 0;
 let snake = [{x: 160, y: 160}];
 let dx = gridSize;
