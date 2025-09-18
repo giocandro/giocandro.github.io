@@ -47,7 +47,7 @@ function updateScore() {
   document.getElementById("score").textContent = "Punteggio: " + score;
 
   // Controllo vittoria
-	if (score === 5) {
+	if (score === 50) {
 	  running = false;
 	  paused = false;
 	  gameOver = true;
