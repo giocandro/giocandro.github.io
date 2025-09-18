@@ -2,55 +2,78 @@ const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 const gridSize = 20; // ogni "quadrato" sarà 20x20 px
 
-function resizeCanvas() {
-  let size = Math.min(window.innerWidth * 0.9, 400);
-  // Arrotonda per far sì che sia multiplo della griglia
-  size = Math.floor(size / gridSize) * gridSize;
-  canvas.width = size;
-  canvas.height = size;
-}
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
-
-let count = 0;
-let snake = [{x: 160, y: 160}];
+let snake = [];
 let dx = gridSize;
 let dy = 0;
-let berry = randomBerry();
+let berry = null;
 let score = 0;
 let running = false;
 let paused = false;
 let gameOver = false;
-let speed = 10; // velocità iniziale (più alto = più lento)
+
+let lastTime = 0;
+let snakeSpeed = 150; // ms tra un movimento e l'altro (più basso = più veloce)
+
+function resizeCanvas() {
+  let size = Math.min(window.innerWidth * 0.9, 400);
+  size = Math.floor(size / gridSize) * gridSize; // multiplo di gridSize
+
+  canvas.width = size;
+  canvas.height = size;
+
+  // Sposta il serpente al centro solo se il gioco è in corso
+  if (snake.length > 0 && running) {
+    const centerX = Math.floor(canvas.width / 2 / gridSize) * gridSize;
+    const centerY = Math.floor(canvas.height / 2 / gridSize) * gridSize;
+    const dxShift = centerX - snake[0].x;
+    const dyShift = centerY - snake[0].y;
+
+    snake = snake.map(part => ({
+      x: part.x + dxShift,
+      y: part.y + dyShift
+    }));
+  }
+
+  // Rigenera la bacca se ora è fuori dai bordi
+  if (berry && (berry.x >= canvas.width || berry.y >= canvas.height)) {
+    berry = randomBerry();
+  }
+}
+
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
 
 function updateScore() {
   document.getElementById("score").textContent = "Punteggio: " + score;
-
-  // aumento difficoltà in base al punteggio
-  if (score === 8) {
-    speed = 8; // aumenta velocità
-  } else if (score === 16) {
-    speed = 6; // aumenta ancora
-  }
 }
 
 document.addEventListener("keydown", keyDown);
 
-function gameLoop() {
+function gameLoop(timestamp) {
   if (!running || paused || gameOver) return;
+
   requestAnimationFrame(gameLoop);
 
-  if (++count < speed) return;
-  count = 0;
+  if (!lastTime) lastTime = timestamp;
+  const delta = timestamp - lastTime;
+
+  if (delta < snakeSpeed) return; // non è ancora il momento di muovere il serpente
+  lastTime = timestamp;
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+  const head = { x: snake[0].x + dx, y: snake[0].y + dy };
   snake.unshift(head);
 
   if (head.x === berry.x && head.y === berry.y) {
     score++;
     updateScore();
     berry = randomBerry();
+
+    // aumenta velocità con il punteggio
+    if (score === 8) snakeSpeed = 120;
+    else if (score === 16) snakeSpeed = 90;
+	else if (score === 24) snakeSpeed = 60;
   } else {
     snake.pop();
   }
@@ -66,7 +89,7 @@ function gameLoop() {
   snake.forEach((part, index) => {
     ctx.fillStyle = index === 0 ? "#2e7d32" : "#4caf50";
     ctx.beginPath();
-    ctx.arc(part.x + gridSize/2, part.y + gridSize/2, gridSize/2 - 2, 0, Math.PI * 2);
+    ctx.arc(part.x + gridSize / 2, part.y + gridSize / 2, gridSize / 2 - 2, 0, Math.PI * 2);
     ctx.fill();
 
     if (index === 0) {
@@ -86,13 +109,13 @@ function gameLoop() {
   // Disegna bacca
   ctx.fillStyle = "red";
   ctx.beginPath();
-  ctx.arc(berry.x + gridSize/2, berry.y + gridSize/2, gridSize/2 - 3, 0, Math.PI * 2);
+  ctx.arc(berry.x + gridSize / 2, berry.y + gridSize / 2, gridSize / 2 - 3, 0, Math.PI * 2);
   ctx.fill();
 
   // Fogliolina
   ctx.fillStyle = "green";
   ctx.beginPath();
-  ctx.ellipse(berry.x + gridSize/2, berry.y + 4, 4, 8, Math.PI/4, 0, Math.PI*2);
+  ctx.ellipse(berry.x + gridSize / 2, berry.y + 4, 4, 8, Math.PI / 4, 0, Math.PI * 2);
   ctx.fill();
 }
 
@@ -138,12 +161,15 @@ function resumeGame() {
 }
 
 function resetGame() {
-  snake = [{x: 160, y: 160}];
+  // Posizione iniziale centrata
+  const startX = Math.floor(canvas.width / 2 / gridSize) * gridSize;
+  const startY = Math.floor(canvas.height / 2 / gridSize) * gridSize;
+  snake = [{ x: startX, y: startY }];
   dx = gridSize;
   dy = 0;
   berry = randomBerry();
   score = 0;
-  speed = 10; // reset velocità iniziale
+  snakeSpeed = 150; // reset velocità iniziale
   updateScore();
 }
 
