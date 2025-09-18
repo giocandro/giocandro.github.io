@@ -13,6 +13,14 @@ let paused = false;
 let gameOver = false;
 let speed = 10; // velocità iniziale (più alto = più lento)
 
+function resizeCanvas() {
+  const size = Math.min(window.innerWidth * 0.9, 400); // massimo 400px
+  canvas.width = size;
+  canvas.height = size;
+}
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas(); // chiama subito
+
 function updateScore() {
   document.getElementById("score").textContent = "Punteggio: " + score;
 
