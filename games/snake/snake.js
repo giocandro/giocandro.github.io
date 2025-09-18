@@ -11,10 +11,17 @@ let score = 0;
 let running = false;
 let paused = false;
 let gameOver = false;
-let speed = 7; // velocità (più alto = più lento)
+let speed = 10; // velocità iniziale (più alto = più lento)
 
 function updateScore() {
   document.getElementById("score").textContent = "Punteggio: " + score;
+
+  // aumento difficoltà in base al punteggio
+  if (score === 8) {
+    speed = 8; // aumenta velocità
+  } else if (score === 16) {
+    speed = 6; // aumenta ancora
+  }
 }
 
 document.addEventListener("keydown", keyDown);
@@ -101,7 +108,7 @@ function setDirection(dir) {
 }
 
 function startGame() {
-  if (running && !gameOver) return; // se già in corso, ignora
+  if (running && !gameOver) return;
   resetGame();
   running = true;
   paused = false;
@@ -115,7 +122,7 @@ function pauseGame() {
 }
 
 function resumeGame() {
-  if (!running || !paused || gameOver) return; // solo se in pausa
+  if (!running || !paused || gameOver) return;
   paused = false;
   requestAnimationFrame(gameLoop);
 }
@@ -126,6 +133,7 @@ function resetGame() {
   dy = 0;
   berry = randomBerry();
   score = 0;
+  speed = 10; // reset velocità iniziale
   updateScore();
 }
 
