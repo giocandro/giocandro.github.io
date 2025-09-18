@@ -45,6 +45,14 @@ window.addEventListener("resize", resizeCanvas);
 
 function updateScore() {
   document.getElementById("score").textContent = "Punteggio: " + score;
+
+  // Controllo vittoria
+	if (score === 5) {
+	  running = false;
+	  paused = false;
+	  gameOver = true;
+	  showPopup("winPopup");
+	}
 }
 
 document.addEventListener("keydown", keyDown);
@@ -57,7 +65,7 @@ function gameLoop(timestamp) {
   if (!lastTime) lastTime = timestamp;
   const delta = timestamp - lastTime;
 
-  if (delta < snakeSpeed) return; // non è ancora il momento di muovere il serpente
+  if (delta < snakeSpeed) return;
   lastTime = timestamp;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -79,8 +87,11 @@ function gameLoop(timestamp) {
   }
 
   // Controllo collisioni
-  if (head.x < 0 || head.y < 0 || head.x >= canvas.width || head.y >= canvas.height ||
-      snake.slice(1).some(s => s.x === head.x && s.y === head.y)) {
+  if (
+    head.x < 0 || head.y < 0 ||
+    head.x >= canvas.width || head.y >= canvas.height ||
+    snake.slice(1).some(s => s.x === head.x && s.y === head.y)
+  ) {
     endGame();
     return;
   }
@@ -92,6 +103,7 @@ function gameLoop(timestamp) {
     ctx.arc(part.x + gridSize / 2, part.y + gridSize / 2, gridSize / 2 - 2, 0, Math.PI * 2);
     ctx.fill();
 
+    // Occhi
     if (index === 0) {
       ctx.fillStyle = "#fff";
       ctx.beginPath();
@@ -161,7 +173,6 @@ function resumeGame() {
 }
 
 function resetGame() {
-  // Posizione iniziale centrata
   const startX = Math.floor(canvas.width / 2 / gridSize) * gridSize;
   const startY = Math.floor(canvas.height / 2 / gridSize) * gridSize;
   snake = [{ x: startX, y: startY }];
@@ -169,7 +180,7 @@ function resetGame() {
   dy = 0;
   berry = randomBerry();
   score = 0;
-  snakeSpeed = 150; // reset velocità iniziale
+  snakeSpeed = 150;
   updateScore();
 }
 
@@ -177,23 +188,31 @@ function endGame() {
   running = false;
   paused = false;
   gameOver = true;
-  showPopup("Game Over! Punteggio finale: " + score);
+  showPopup("gameOverPopup", "Game Over! Punteggio finale: " + score);
 }
 
-function showPopup(message) {
-  document.getElementById("popupMessage").textContent = message;
-  document.getElementById("gameOverPopup").style.display = "flex";
+function showPopup(id, message = "") {
+  const popup = document.getElementById(id);
+  if (!popup) return;
+  popup.style.display = "flex";
+
+  // Se è il popup "gameOver", inserisci il messaggio
+  if (id === "gameOverPopup" && message) {
+    document.getElementById("popupMessage").textContent = message;
+  }
 }
 
-function closePopup() {
-  document.getElementById("gameOverPopup").style.display = "none";
+function closePopup(id) {
+  const popup = document.getElementById(id);
+  if (!popup) return;
+  popup.style.display = "none";
 }
 
 // --- TOUCH CONTROLS REATTIVI ---
 function bindTouchControls() {
   const buttons = document.querySelectorAll(".touch-controls button");
   buttons.forEach(btn => {
-    const direction = btn.getAttribute("onclick").match(/'(\w+)'/)[1]; // estrae 'up', 'down', etc
+    const direction = btn.getAttribute("onclick").match(/'(\w+)'/)[1];
     btn.addEventListener("touchstart", e => {
       e.preventDefault();
       setDirection(direction);

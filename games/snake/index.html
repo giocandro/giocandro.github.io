@@ -10,16 +10,16 @@
   <style>
     .canvas-wrapper {
       display: flex;
-      justify-content: center; /* centra orizzontalmente */
-      align-items: center;     /* centra verticalmente se serve */
+      justify-content: center;
+      align-items: center;
       margin: 1rem 0;
     }
 
     canvas {
       background: #e9f5e9;
-	  border: 4px solid #4a90e2;
-	  border-radius: 1rem;
-	  display: block;
+      border: 4px solid #4a90e2;
+      border-radius: 1rem;
+      display: block;
     }
 
     #score {
@@ -60,11 +60,11 @@
       width: 60px;
       height: 60px;
       margin: 5px;
-      border-radius: 50%;       /* rotondi */
+      border-radius: 50%;
       border: none;
-      background: #4a90e2;      /* cerchio pieno */
-      color: white;             /* freccia bianca */
-      font-size: 2rem;          /* freccia più grande */
+      background: #4a90e2;
+      color: white;
+      font-size: 2rem;
       font-weight: bold;
       display: inline-flex;
       justify-content: center;
@@ -77,8 +77,9 @@
       .touch-controls { display: block; }
     }
 
+    /* POPUP */
     .popup {
-      display: none; /* nascosto di default */
+      display: none;
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
@@ -93,30 +94,51 @@
       border-radius: 1rem;
       text-align: center;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      max-width: 90%;
     }
 
     .popup-content h2 {
       margin-top: 0;
       color: #4a90e2;
     }
+
+    .popup-content img {
+      max-width: 250px;
+      border-radius: 1rem;
+      margin-bottom: 1rem;
+    }
   </style>
 </head>
 <body>
   <div id="menu"></div>
   
+  <!-- Popup game over -->
   <div id="gameOverPopup" class="popup">
     <div class="popup-content">
       <h2>Giocandro</h2>
       <p id="popupMessage"></p>
-      <button onclick="closePopup()">Chiudi</button>
+      <button onclick="closePopup('gameOverPopup')">Chiudi</button>
+    </div>
+  </div>
+  
+  <!-- Popup vittoria -->
+  <div id="winPopup" class="popup">
+    <div class="popup-content">
+      <img src="../../winSnake.JPEG" alt="Vittoria">
+      <h2>🎉 Complimenti! Hai Vinto. 🎉</h2>
+      <button onclick="closePopup('winPopup')">Chiudi</button>
     </div>
   </div>
 
   <main class="container">
     <h1>🐍 Snake</h1>
+    <p class="game-info">
+      Premi <strong>Start</strong> per iniziare.<br>
+      Il serpente diventa più veloce ai punteggi <strong>8</strong>, <strong>16</strong> e <strong>24</strong>.<br>
+      Arriva a <strong>50 punti</strong> e scoprirai cosa succede!
+    </p>
     <div id="score">Punteggio: 0</div>
 
-    <!-- wrapper flex -->
     <div class="canvas-wrapper">
       <canvas id="gameCanvas" width="400" height="400"></canvas>
     </div>
