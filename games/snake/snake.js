@@ -1,6 +1,14 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
+function resizeCanvas() {
+  let size = Math.min(window.innerWidth * 0.9, 400); // 90% dello schermo, max 400
+  canvas.width = size;
+  canvas.height = size;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
 let gridSize = 20;
 let count = 0;
 let snake = [{x: 160, y: 160}];
@@ -12,14 +20,6 @@ let running = false;
 let paused = false;
 let gameOver = false;
 let speed = 10; // velocità iniziale (più alto = più lento)
-
-function resizeCanvas() {
-  const size = Math.min(window.innerWidth * 0.9, 400); // massimo 400px
-  canvas.width = size;
-  canvas.height = size;
-}
-window.addEventListener("resize", resizeCanvas);
-resizeCanvas(); // chiama subito
 
 function updateScore() {
   document.getElementById("score").textContent = "Punteggio: " + score;
