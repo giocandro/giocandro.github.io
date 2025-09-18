@@ -73,7 +73,7 @@ function gameLoop(timestamp) {
     // aumenta velocità con il punteggio
     if (score === 8) snakeSpeed = 120;
     else if (score === 16) snakeSpeed = 90;
-	else if (score === 24) snakeSpeed = 60;
+    else if (score === 24) snakeSpeed = 60;
   } else {
     snake.pop();
   }
@@ -188,3 +188,17 @@ function showPopup(message) {
 function closePopup() {
   document.getElementById("gameOverPopup").style.display = "none";
 }
+
+// --- TOUCH CONTROLS REATTIVI ---
+function bindTouchControls() {
+  const buttons = document.querySelectorAll(".touch-controls button");
+  buttons.forEach(btn => {
+    const direction = btn.getAttribute("onclick").match(/'(\w+)'/)[1]; // estrae 'up', 'down', etc
+    btn.addEventListener("touchstart", e => {
+      e.preventDefault();
+      setDirection(direction);
+    });
+  });
+}
+
+bindTouchControls();
