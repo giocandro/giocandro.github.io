@@ -63,3 +63,45 @@ header, #menu {
   transform: translateY(-5px);
   box-shadow: 0 6px 16px rgba(0,0,0,0.15);
 }
+
+/* Nascondi il bottone hamburger su PC */
+#menu .menu-toggle {
+  display: none;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+/* --- Responsive per smartphone/tablet --- */
+@media (max-width: 768px) {
+  #menu nav {
+    display: none; /* nascosto di default su mobile */
+    flex-direction: column;
+    gap: 0.5rem;
+    background: #357ABD;
+    padding: 1rem;
+    border-radius: 1rem;
+    margin-top: 0.5rem;
+    width: 100%; /* occupa tutta la larghezza */
+    box-sizing: border-box;
+  }
+
+  #menu nav.show {
+    display: flex; /* compare quando attivato */
+  }
+
+  #menu .menu-toggle {
+    display: block; /* mostra bottone hamburger */
+    margin-left: auto;
+  }
+
+  #menu a {
+    display: block;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    width: 100%; /* i link si estendono */
+  }
+}
