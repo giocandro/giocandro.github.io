@@ -12,7 +12,7 @@ let paused = false;
 let gameOver = false;
 
 let lastTime = 0;
-let snakeSpeed = 150; // ms tra un movimento e l'altro (più basso = più veloce)
+let snakeSpeed = 210; // ms tra un movimento e l'altro (più basso = più veloce)
 
 function resizeCanvas() {
   let size = Math.min(window.innerWidth * 0.9, 400);
@@ -79,9 +79,11 @@ function gameLoop(timestamp) {
     berry = randomBerry();
 
     // aumenta velocità con il punteggio
-    if (score === 8) snakeSpeed = 120;
-    else if (score === 16) snakeSpeed = 90;
-    else if (score === 24) snakeSpeed = 60;
+    if (score === 8) snakeSpeed = 180;
+    else if (score === 16) snakeSpeed = 150;
+    else if (score === 24) snakeSpeed = 120;
+	else if (score === 32) snakeSpeed = 90;
+	else if (score === 40) snakeSpeed = 60;
   } else {
     snake.pop();
   }
@@ -139,6 +141,10 @@ function randomBerry() {
 }
 
 function keyDown(e) {
+  if (["ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown"].includes(e.key)) {
+    e.preventDefault(); // impedisce lo scroll della pagina
+  }
+
   if (e.key === "ArrowLeft" && dx === 0) { dx = -gridSize; dy = 0; }
   else if (e.key === "ArrowUp" && dy === 0) { dx = 0; dy = -gridSize; }
   else if (e.key === "ArrowRight" && dx === 0) { dx = gridSize; dy = 0; }
