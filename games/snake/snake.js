@@ -12,7 +12,7 @@ let paused = false;
 let gameOver = false;
 
 let lastTime = 0;
-let snakeSpeed = 210; // ms tra un movimento e l'altro (più basso = più veloce)
+let snakeSpeed = 330; // ms tra un movimento e l'altro (più basso = più veloce)
 
 function resizeCanvas() {
   let size = Math.min(window.innerWidth * 0.9, 400);
@@ -79,7 +79,8 @@ function gameLoop(timestamp) {
     berry = randomBerry();
 
     // aumenta velocità con il punteggio
-    if (score === 8) snakeSpeed = 180;
+	if (score === 3) snakeSpeed = 240;
+    else if (score === 8) snakeSpeed = 180;
     else if (score === 16) snakeSpeed = 150;
     else if (score === 24) snakeSpeed = 120;
 	else if (score === 32) snakeSpeed = 90;
@@ -186,7 +187,7 @@ function resetGame() {
   dy = 0;
   berry = randomBerry();
   score = 0;
-  snakeSpeed = 150;
+  snakeSpeed = 330;
   updateScore();
 }
 
